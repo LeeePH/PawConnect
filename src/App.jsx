@@ -8,7 +8,7 @@ import PetSection from './components/PetsSection';
 import PartneredShelters from './components/PartneredShelters';
 import AdoptionSteps from './components/AdoptionSteps';
 import CoexistenceSection from './components/CoexistenceSection';
-import AboutUs from './components/AboutUs';
+import FaqSection from './components/FaqSection';
 import FooterSection from './components/FooterSection';
 
 // admin
@@ -26,9 +26,9 @@ const App = () => {
               <MainContent />
               <PetSection />
               <PartneredShelters/>
-              <AdoptionSteps />
               <CoexistenceSection />
-              <AboutUs />
+              <AdoptionSteps />
+              <FaqSection />
               <FooterSection />
             </div>
           }

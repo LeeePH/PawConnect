@@ -6,7 +6,7 @@ import humananimals from '../assets/mascot.jfif'
 const CoexistenceSection = () => {
     return (
     <section id='coexist' className="bg-gray-100 dark:bg-gray-900 max-w-full mx-auto py-12 px-4">
-        <h2 className="text-4xl font-bold text-center mb-10">
+        <h2 className="text-4xl font-bold text-center mb-10 uppercase">
             Peaceful Coexistence <br />
             <span>Human & Animals</span>
         </h2>
