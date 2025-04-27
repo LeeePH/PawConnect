@@ -29,14 +29,12 @@ import {
   LogOut
 } from "lucide-react"
 
-// Register ChartJS components
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, ArcElement, Tooltip, Legend)
 import axios from "axios";
 
 const API_URL = "http://localhost:5000";
 
 const AdminDashboard = () => {
-  // State management
   const [activeTab, setActiveTab] = useState("main")
   const [pets, setPets] = useState([])
   const [shelters, setShelters] = useState([])
@@ -48,7 +46,7 @@ const AdminDashboard = () => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
 
-  // Dashboard statistics
+  // statistics
   const [totalUsers, setTotalUsers] = useState(0)
   const [totalPets, setTotalPets] = useState(0)
   const [totalShelters, setTotalShelters] = useState(0)
@@ -57,7 +55,6 @@ const AdminDashboard = () => {
   const [petTypes, setPetTypes] = useState({})
   const [shelterLocations, setShelterLocations] = useState({})
 
-  // Form state
   const [newPet, setNewPet] = useState({
     name: "",
     type: "",
@@ -77,7 +74,6 @@ const AdminDashboard = () => {
     img: "",
   })
 
-  // Chart data
   const lineData = {
     labels: userRegistrations.map((entry) => entry.month),
     datasets: [
@@ -116,7 +112,7 @@ const AdminDashboard = () => {
     ],
   }
 
-  // Fetch data functions
+  // fetch data
   const fetchDashboardData = useCallback(async () => {
     try {
       setIsRefreshing(true)
@@ -131,7 +127,6 @@ const AdminDashboard = () => {
       const petsData = await petsRes.json()
       const sheltersData = await sheltersRes.json()
 
-      // Handle potential API response formats
       const usersData = await usersRes.json()
       const petsCountData = await petsCountRes.json()
       const sheltersCountData = await sheltersCountRes.json()
@@ -403,29 +398,29 @@ const AdminDashboard = () => {
     const newDarkMode = !darkMode
     setDarkMode(newDarkMode)
 
-    // Update the class on the document element
     if (newDarkMode) {
       document.documentElement.classList.add("dark")
     } else {
       document.documentElement.classList.remove("dark")
     }
 
-    // Save preference to localStorage
     localStorage.setItem("darkMode", newDarkMode ? "dark" : "light")
 
-    // Log the action
     logAction(`Switched to ${newDarkMode ? "dark" : "light"} mode`)
   }
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // ✅ Remove authentication token
-    toast.success("Logged out successfully!");
-    
-    setTimeout(() => {
-      window.location.href = "/login"; // ✅ Redirect to login page
-    }, 1500);
-
-    logAction("Logged out at " + new Date().toLocaleString());
+    const confirmLogout = window.confirm("Are you sure you want to log out?");
+    if (confirmLogout) {
+      localStorage.removeItem("token");
+      toast.success("Logged out successfully!");
+  
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 1500);
+  
+      logAction("Logged out at " + new Date().toLocaleString());
+    }
   };
   
 

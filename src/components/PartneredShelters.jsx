@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
-import { MapPin, Phone, Info, X, Mail, Globe, Search } from "lucide-react"
+import { MapPin, Phone, Info, X, Mail, Globe } from "lucide-react"
 
 const PartneredShelters = () => {
   const [shelters, setShelters] = useState([])
@@ -31,35 +31,31 @@ const PartneredShelters = () => {
       })
   }, [])
 
-  // Filter shelters based on search term and selected filter
+  // filter shelter
   const filteredShelters = shelters.filter((shelter) => {
     const matchesSearch =
       shelter.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       shelter.location.toLowerCase().includes(searchTerm.toLowerCase())
 
-    if (selectedFilter === "all") return matchesSearch
-    // Add more filter conditions if needed
+    if (selectedFilter === "all") return matchesSearch // add more if needed
     return matchesSearch
   })
 
   const openShelterModal = (shelter) => {
     setSelectedShelter(shelter)
     setShowModal(true)
-    // Prevent body scrolling when modal is open
     document.body.style.overflow = "hidden"
   }
 
   const closeShelterModal = () => {
     setShowModal(false)
     setSelectedShelter(null)
-    // Re-enable body scrolling
     document.body.style.overflow = "auto"
   }
 
   return (
     <section id="shelter" className="my-16 bg-white dark:bg-gray-950">
       <div className="container mx-auto px-4">
-        {/* Header */}
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">
             OUR PARTNERED <span className="text-[#6D712E]">SHELTERS</span>
@@ -70,27 +66,12 @@ const PartneredShelters = () => {
           </p>
         </div>
 
-        {/* Loading state */}
         {isLoading && (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6D712E]"></div>
           </div>
         )}
 
-        {/* Error state */}
-        {error && (
-          <div className="bg-red-50 text-red-600 p-4 rounded-lg text-center max-w-lg mx-auto">
-            <p className="font-medium">Failed to load shelters: {error}</p>
-            <button
-              className="mt-2 text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md text-sm font-medium"
-              onClick={() => window.location.reload()}
-            >
-              Try Again
-            </button>
-          </div>
-        )}
-
-        {/* Shelters grid */}
         {!isLoading && !error && (
           <>
             {filteredShelters.length === 0 ? (
@@ -143,9 +124,9 @@ const PartneredShelters = () => {
                       <div className="mt-auto pt-4">
                         <button
                           onClick={() => openShelterModal(shelter)}
-                          className="inline-flex items-center justify-center w-full py-3 px-4 bg-white text-[#6D712E] border border-[#6D712E] rounded-lg hover:bg-[#6D712E] hover:text-white transition-colors duration-300 font-medium"
+                          className="inline-flex items-center justify-center w-full py-3 px-4 bg-[#6D712E] border border-[#6D712E] rounded-lg hover:bg-[#6D712E] hover:text-white transition-colors duration-300 font-medium"
                         >
-                          <span>More Info</span>
+                          <span className="text-white">More Info</span>
                           <Info className="ml-2 h-4 w-4" />
                         </button>
                       </div>
@@ -158,7 +139,6 @@ const PartneredShelters = () => {
         )}
       </div>
 
-      {/* Shelter Detail Modal */}
       {showModal && selectedShelter && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
           <div className="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -174,7 +154,6 @@ const PartneredShelters = () => {
 
             <div className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Left column - Shelter info */}
                 <div>
                   <div className="flex justify-center mb-6">
                     {selectedShelter.logo ? (
@@ -257,11 +236,9 @@ const PartneredShelters = () => {
                   )}
                 </div>
 
-                {/* Right column - Map */}
                 <div>
                   <h4 className="font-medium text-lg text-gray-900 dark:text-white mb-4">Location</h4>
                   <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 h-[300px] md:h-[400px] relative">
-                    {/* Simple Google Maps Embed */}
                     <iframe
                       className="w-full h-full"
                       src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3859.0255755083554!2d121.05109021067622!3d14.711145784568744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2s!5e0!3m2!1sen!2sph!4v1735915611144!5m2!1sen!2sph"

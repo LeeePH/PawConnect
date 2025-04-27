@@ -26,7 +26,7 @@ const App = () => {
               <MainContent />
               <PetSection />
               <PartneredShelters/>
-              <CoexistenceSection />
+              {/* <CoexistenceSection /> */}
               <AdoptionSteps />
               <FaqSection />
               <FooterSection />

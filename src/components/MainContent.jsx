@@ -1,13 +1,14 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ToastContainer, toast } from "react-toastify"
-import pet from '../assets/pet.jpg'
 import "react-toastify/dist/ReactToastify.css"
+import pet from '../assets/pet.jpg'
 
 const MainContent = () => {
   const [showLoginModal, setShowLoginModal] = useState(false)
   const [showRegisterModal, setShowRegisterModal] = useState(false)
+  const [showScrollToTop, setShowScrollToTop] = useState(false)
 
   const toggleLoginModal = () => {
     setShowLoginModal(!showLoginModal)
@@ -18,6 +19,25 @@ const MainContent = () => {
     setShowRegisterModal(!showRegisterModal)
     if (showLoginModal) setShowLoginModal(false)
   }
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const mainSection = document.getElementById("home")
+      if (mainSection) {
+        const mainSectionHeight = mainSection.offsetHeight
+        setShowScrollToTop(window.scrollY > mainSectionHeight)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -99,16 +119,13 @@ const MainContent = () => {
     <>
       <ToastContainer />
       <main id="home" className="relative overflow-hidden min-h-screen flex items-center py-16 dark:bg-gray-950">
-        {/* Background with paw pattern */}
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-white to-gray-100 dark:from-gray-900 dark:to-gray-900 overflow-hidden">
-          {/* Decorative circles */}
           <div className="absolute top-20 left-20 w-64 h-64 rounded-full bg-[#6D712E]/5 animate-pulse"></div>
           <div
             className="absolute bottom-20 right-20 w-80 h-80 rounded-full bg-[#6D712E]/10 animate-pulse"
             style={{ animationDelay: "1s" }}
           ></div>
-
-          {/* Paw print pattern - using CSS background instead of SVG for better performance */}
+          
           <div className="absolute inset-0 opacity-5 bg-[url('/paw-pattern.png')] bg-repeat"></div>
         </div>
 
@@ -147,8 +164,16 @@ const MainContent = () => {
                   </svg>
                 </button>
 
-                <button className="bg-white dark:bg-gray-800 text-[#6D712E] border-2 border-[#6D712E] px-8 py-4 rounded-xl text-lg font-medium shadow-md hover:shadow-lg transition-all flex items-center justify-center">
-                  <span>Learn More</span>
+                <button
+                  className="bg-white dark:bg-gray-800 text-[#6D712E] border-2 border-[#6D712E] px-8 py-4 rounded-xl text-lg font-medium shadow-md hover:shadow-lg transition-all flex items-center justify-center"
+                  onClick={() => {
+                    const faqSection = document.getElementById("FAQ")
+                    if (faqSection) {
+                      faqSection.scrollIntoView({ behavior: "smooth" })
+                    }
+                  }}
+                >
+                  <span>View FAQs</span>
                 </button>
               </div>
 
@@ -164,19 +189,11 @@ const MainContent = () => {
             {/* Right Content - 3D-like Image */}
             <div className="w-full lg:w-1/2 flex justify-center">
               <div className="relative">
-                {/* 3D Effect Container */}
                 <div className="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-300">
-                  {/* Main Image */}
-                  <img
-                    src={pet}
-                    alt="Cute pet"
-                    className="w-full h-full object-cover"
-                  />
+                  <img src={pet} alt="Cute pet" className="w-full h-full object-cover" />
 
-                  {/* Overlay Gradient */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-[#6D712E]/30 to-transparent"></div>
 
-                  {/* Floating Hearts - using CSS animations */}
                   <div className="absolute top-1/4 left-1/4 text-white animate-float" style={{ animationDelay: "0s" }}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
@@ -193,15 +210,13 @@ const MainContent = () => {
                     </svg>
                   </div>
                 </div>
-
-                {/* Decorative Elements */}
+           
                 <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-[#A3A86B] opacity-80 animate-pulse"></div>
                 <div
                   className="absolute -top-6 -left-6 w-16 h-16 rounded-full bg-[#6D712E] opacity-80 animate-pulse"
                   style={{ animationDelay: "1s" }}
                 ></div>
 
-                {/* Paw Print Icon */}
                 <div
                   className="absolute top-1/2 -right-8 transform -translate-y-1/2 bg-white dark:bg-gray-800 p-3 rounded-full shadow-lg animate-bounce"
                   style={{ animationDuration: "3s" }}
@@ -226,6 +241,24 @@ const MainContent = () => {
           </div>
         </div>
       </main>
+
+      {showScrollToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 bg-[#6D712E] text-white p-3 rounded-full shadow-lg hover:bg-[#7D812E] transition-all z-40"
+          aria-label="Scroll to top"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+      )}
 
       {/* Login Modal */}
       {showLoginModal && (

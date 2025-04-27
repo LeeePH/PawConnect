@@ -1,14 +1,19 @@
 "use client"
 
 import { useState } from "react"
-import { Plus, Minus, HelpCircle, Search } from "lucide-react"
+import { Plus, Minus, HelpCircle, Search, Mail, Phone, MapPin, X, MessageSquare, Clock } from "lucide-react"
 
 const FaqSection = () => {
   const [activeIndex, setActiveIndex] = useState(null)
   const [searchQuery, setSearchQuery] = useState("")
+  const [showContactModal, setShowContactModal] = useState(false)
 
   const toggleQuestion = (index) => {
     setActiveIndex(activeIndex === index ? null : index)
+  }
+
+  const toggleContactModal = () => {
+    setShowContactModal(!showContactModal)
   }
 
   const faqItems = [
@@ -64,7 +69,6 @@ const FaqSection = () => {
     <section id="FAQ" className="py-20 bg-white dark:bg-gray-900">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Left Column: Title and Search */}
           <div className="lg:sticky lg:top-20 lg:self-start">
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#6D712E]/10 mb-6">
               <HelpCircle className="h-8 w-8 text-[#6D712E]" />
@@ -76,7 +80,6 @@ const FaqSection = () => {
               Find answers to common questions about pet adoption
             </p>
 
-            {/* Search Bar */}
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 text-gray-400" />
@@ -91,7 +94,6 @@ const FaqSection = () => {
             </div>
           </div>
 
-          {/* Right Column: FAQ Accordion */}
           <div className="divide-y divide-gray-200 dark:divide-gray-700 rounded-xl overflow-hidden shadow-lg border border-gray-100 dark:border-gray-800">
             {filteredFAQs.length > 0 ? (
               filteredFAQs.map((item, index) => (
@@ -128,19 +130,152 @@ const FaqSection = () => {
           </div>
         </div>
 
-        {/* Contact Section */}
         <div className="mt-12 text-center">
           <p className="text-gray-600 dark:text-gray-300 mb-4">Still have questions? We're here to help!</p>
-          <a
-            href="#contact"
-            className="inline-flex items-center justify-center px-6 py-3 border border-[#6D712E] text-[#6D712E] hover:bg-[#6D712E] hover:text-white rounded-lg transition-colors duration-300 font-medium"
+          <button
+            onClick={toggleContactModal}
+            className="inline-flex items-center justify-center px-6 py-3 border bg-[#6D712E] border-[#6D712E] text-white hover:bg-[#53571f] rounded-lg transition-colors duration-300 font-medium"
           >
             Contact Us
-          </a>
+          </button>
         </div>
       </div>
+
+      {showContactModal && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-3xl w-full max-h-[80vh] overflow-y-auto shadow-2xl animate-fadeIn">
+          <div className="relative p-6">
+            {/* Close Button */}
+            <button
+              onClick={toggleContactModal}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              aria-label="Close Modal"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#6D712E]/10 mb-4">
+                <MessageSquare className="h-8 w-8 text-[#6D712E]" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Contact PawConnect</h3>
+              <p className="text-gray-600 dark:text-gray-300 mt-1">We'd love to hear from you!</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Contact Information */}
+              <div className="space-y-6">
+                <div className="flex items-start space-x-4">
+                  <div className="bg-[#6D712E]/10 p-3 rounded-full">
+                    <Phone className="h-6 w-6 text-[#6D712E]" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Phone</h4>
+                    <p className="text-gray-600 dark:text-gray-300 mt-1">(555) 123-4567</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Mon-Fri: 9am-5pm</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="bg-[#6D712E]/10 p-3 rounded-full">
+                    <Mail className="h-6 w-6 text-[#6D712E]" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Email</h4>
+                    <p className="text-gray-600 dark:text-gray-300 mt-1">info@pawconnect.com</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">We'll respond within 24 hours</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="bg-[#6D712E]/10 p-3 rounded-full">
+                    <MapPin className="h-6 w-6 text-[#6D712E]" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Location</h4>
+                    <p className="text-gray-600 dark:text-gray-300 mt-1">123 Pet Avenue</p>
+                    <p className="text-gray-600 dark:text-gray-300">Pawsville, CA 90210</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start space-x-4">
+                  <div className="bg-[#6D712E]/10 p-3 rounded-full">
+                    <Clock className="h-6 w-6 text-[#6D712E]" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Hours</h4>
+                    <p className="text-gray-600 dark:text-gray-300 mt-1">Monday - Friday: 9am - 5pm</p>
+                    <p className="text-gray-600 dark:text-gray-300">Saturday: 10am - 4pm</p>
+                    <p className="text-gray-600 dark:text-gray-300">Sunday: Closed</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Form */}
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-6">
+                <h4 className="font-medium text-lg text-gray-900 dark:text-white mb-4">Send us a message</h4>
+                <form className="space-y-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      className="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#6D712E] focus:border-[#6D712E] bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      className="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#6D712E] focus:border-[#6D712E] bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      placeholder="Your email"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Message
+                    </label>
+                    <textarea
+                      id="message"
+                      rows={4}
+                      className="block w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-[#6D712E] focus:border-[#6D712E] bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                      placeholder="How can we help you?"
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-[#6D712E] hover:bg-[#7D812E] text-white py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all"
+                  >
+                    Send Message
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.95); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out forwards;
+        }
+      `}</style>
     </section>
   )
 }
 
+
 export default FaqSection
+

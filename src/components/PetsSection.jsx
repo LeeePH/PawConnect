@@ -4,6 +4,9 @@ import { useState, useEffect } from "react"
 import PetCard from "../common/PetCard.jsx"
 import PetInfoModal from "../common/PetInfoModal.jsx"
 
+import { X, User, Lock, Mail } from "lucide-react";
+import { toast } from "react-toastify"
+
 const PetsSection = () => {
   const [selectedPet, setSelectedPet] = useState(null)
   const [pets, setPets] = useState([])
@@ -42,38 +45,47 @@ const PetsSection = () => {
   }
 
   const handleLogin = async (e) => {
-    e.preventDefault() // Prevent form submission
-    const username = document.querySelector("#login-username")?.value
-    const password = document.querySelector("#login-password")?.value
-
-    if (!username || !password) {
-      alert("Please fill in both fields.")
-      return
-    }
-
-    try {
-      const response = await fetch("http://localhost:5000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      })
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        alert(`Login failed: ${errorText}`)
-      } else {
-        const data = await response.json()
-        alert("Login successful!")
-        console.log(data.token)
-
-        window.location.href = "https://adopt-pet-adoption-4.netlify.app/"
+      e.preventDefault()
+      const username = document.querySelector("#login-username").value
+      const password = document.querySelector("#login-password").value
+  
+      if (!username || !password) {
+        toast.error("Please fill in both fields.")
+        return
       }
-    } catch (error) {
-      alert("Error connecting to the server.")
+  
+      if (username === "Admin" && password === "123") {
+        toast.success("Admin login successful!")
+        setTimeout(() => {
+          window.location.href = "/admin/dashboard"
+        }, 2000)
+        return
+      }
+  
+      try {
+        const response = await fetch("http://localhost:5000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        })
+  
+        if (!response.ok) {
+          const errorText = await response.text()
+          toast.error(`Login failed: ${errorText}`)
+        } else {
+          const data = await response.json()
+          toast.success("Login successful!")
+          setTimeout(() => {
+            window.location.href = `http://localhost:5174/?username=${encodeURIComponent(username)}`
+            localStorage.setItem("token", data.token)
+          }, 2000)
+        }
+      } catch (error) {
+        toast.error("Error connecting to the server.")
+      }
     }
-  }
 
   const handleRegister = async (e) => {
     e.preventDefault() // Prevent form submission
@@ -136,15 +148,7 @@ const PetsSection = () => {
                 onClick={toggleLoginModal}
                 className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <X className="h-6 w-6" />
               </button>
 
               <div className="text-center mb-6">
@@ -178,20 +182,7 @@ const PetsSection = () => {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-gray-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
+                      <User className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="login-username"
@@ -217,20 +208,7 @@ const PetsSection = () => {
                   </div>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-gray-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
+                      <Lock className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="login-password"
@@ -272,15 +250,7 @@ const PetsSection = () => {
                 onClick={toggleRegisterModal}
                 className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                <X className="h-6 w-6" />
               </button>
 
               <div className="text-center mb-6">
@@ -314,20 +284,7 @@ const PetsSection = () => {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-gray-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
+                      <User className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="register-username"
@@ -348,20 +305,7 @@ const PetsSection = () => {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-gray-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                        />
-                      </svg>
+                      <Mail className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="register-email"
@@ -382,20 +326,7 @@ const PetsSection = () => {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5 text-gray-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                        />
-                      </svg>
+                      <Lock className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="register-password"
