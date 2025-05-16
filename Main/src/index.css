@@ -1,0 +1,22 @@
+/* Tailwind base styles */
+@tailwind base;
+
+/* Tailwind component styles */
+@tailwind components;
+
+/* Tailwind utility styles */
+@tailwind utilities;
+
+body {
+    @apply bg-gray-50 text-gray-900
+    duration-300
+}
+
+.dark body {
+    @apply bg-gray-950 text-white
+}
+
+span {
+    @apply text-[#6D712E]
+}
+

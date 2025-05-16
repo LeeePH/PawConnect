@@ -1,0 +1,24 @@
+@keyframes backgroundFloat {
+    0% {
+      transform: translate(0, 0) scale(1.05);
+    }
+    25% {
+      transform: translate(-5px, 5px) scale(1.05);
+    }
+    50% {
+      transform: translate(0, 10px) scale(1.05);
+    }
+    75% {
+      transform: translate(5px, 5px) scale(1.05);
+    }
+    100% {
+      transform: translate(0, 0) scale(1.05);
+    }
+  }
+  
+  .animate-background {
+    animation: backgroundFloat 15s ease-in-out infinite;
+    background-size: 105% 105%; /* Slightly larger to prevent edges from showing during animation */
+  }
+  
+  
