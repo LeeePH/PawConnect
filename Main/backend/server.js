@@ -45,10 +45,13 @@ const upload = multer({ storage })
 export default upload
 
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "adoptions",
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "",
+  database: process.env.DB_NAME || "adoptions",
+  ssl: process.env.NODE_ENV === "production" ? {
+    rejectUnauthorized: true
+  } : undefined
 })
 
 db.connect((err) => {
